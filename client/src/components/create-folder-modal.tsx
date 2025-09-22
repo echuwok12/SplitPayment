@@ -37,11 +37,19 @@ export default function CreateFolderModal({ open, onOpenChange }: CreateFolderMo
 
   const createFolderMutation = useMutation({
     mutationFn: async (data: z.infer<typeof formSchema>) => {
-      const payload = {
-        ...data,
-        startDate: data.startDate ? new Date(data.startDate).toISOString() : null,
+      const payload: any = {
+        name: data.name,
+        description: data.description,
       };
+      // Only include startDate if it has a value (avoid sending null)
+      if (data.startDate) {
+        payload.startDate = data.startDate;
+      }
       const response = await apiRequest("POST", "/api/folders", payload);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create folder");
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -53,10 +61,10 @@ export default function CreateFolderModal({ open, onOpenChange }: CreateFolderMo
       form.reset();
       onOpenChange(false);
     },
-    onError: () => {
+    onError: (error: Error) => {
       toast({
         title: "Error",
-        description: "Failed to create folder. Please try again.",
+        description: error.message || "Failed to create folder. Please try again.",
         variant: "destructive",
       });
     },

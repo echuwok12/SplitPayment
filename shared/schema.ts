@@ -105,6 +105,17 @@ export const insertUserSchema = createInsertSchema(users).omit({
 export const insertFolderSchema = createInsertSchema(folders).omit({
   id: true,
   createdAt: true,
+}).extend({
+  startDate: z.preprocess(
+    (val) => {
+      if (typeof val === "string" && val) {
+        // Parse as UTC to avoid timezone issues
+        return new Date(val + "T00:00:00Z");
+      }
+      return undefined;
+    },
+    z.date().optional()
+  ),
 });
 
 export const insertMemberSchema = createInsertSchema(members).omit({

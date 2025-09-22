@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { storage } from "./storage";
 
 const app = express();
 app.use(express.json());
@@ -37,6 +38,21 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Ensure demo user exists for the application
+  try {
+    const existingUser = await storage.getUser("demo-user-id");
+    if (!existingUser) {
+      await storage.createUser({
+        username: "demo",
+        password: "password", 
+        name: "Demo User"
+      });
+      log("Created demo user for development");
+    }
+  } catch (error) {
+    log("Note: Could not verify/create demo user - manual creation may be needed");
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
