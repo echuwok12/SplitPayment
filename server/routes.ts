@@ -4,13 +4,21 @@ import { storage } from "./storage";
 import { insertFolderSchema, insertMemberSchema, insertExpenseSchema } from "@shared/schema";
 import { z } from "zod";
 
+async function getDemoUserId(): Promise<string> {
+  const demoUser = await storage.getUserByUsername("demo");
+  if (!demoUser) {
+    throw new Error("Demo user not found");
+  }
+  return demoUser.id;
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Folders
   app.get("/api/folders", async (req, res) => {
     try {
-      // For demo purposes, using a hardcoded user ID
+      // For demo purposes, using a demo user ID
       // In production, this would come from authentication
-      const userId = "demo-user-id";
+      const userId = await getDemoUserId();
       const folders = await storage.getFolders(userId);
       res.json(folders);
     } catch (error) {
@@ -30,21 +38,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/folders", async (req, res) => {
-    try {
-      const validatedData = insertFolderSchema.parse({
-        ...req.body,
-        createdBy: "demo-user-id", // In production, get from auth
-      });
-      const folder = await storage.createFolder(validatedData);
-      res.status(201).json(folder);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return res.status(400).json({ message: "Invalid data", errors: error.errors });
-      }
-      res.status(500).json({ message: "Failed to create folder" });
+app.post("/api/folders", async (req, res) => {
+  try {
+    console.log("POST /api/folders body:", req.body);
+
+    const userId = await getDemoUserId();
+    console.log("Resolved userId:", userId);
+
+    const validatedData = insertFolderSchema.parse({
+      ...req.body,
+      createdBy: userId, // In production, get from auth
+    });
+    console.log("Creating folder with:", validatedData);
+
+    const folder = await storage.createFolder(validatedData);
+    res.status(201).json(folder);
+  } catch (error) {
+    console.error("Error creating folder:", error); // 👈 log the actual error
+
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ message: "Invalid data", errors: error.errors });
     }
-  });
+    res.status(500).json({ message: "Failed to create folder", error: String(error) });
+  }
+});
 
   // Members
   app.get("/api/folders/:folderId/members", async (req, res) => {

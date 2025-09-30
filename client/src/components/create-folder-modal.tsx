@@ -12,7 +12,9 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { insertFolderSchema } from "@shared/schema";
 
-const formSchema = insertFolderSchema.extend({
+const formSchema = z.object({
+  name: z.string().min(1, "Folder name is required"),
+  description: z.string().optional(),
   startDate: z.string().optional(),
 });
 
@@ -46,6 +48,8 @@ export default function CreateFolderModal({ open, onOpenChange }: CreateFolderMo
         payload.startDate = data.startDate;
       }
       const response = await apiRequest("POST", "/api/folders", payload);
+      console.log("Payload being sent to /api/folders:", payload);
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to create folder");
@@ -95,7 +99,7 @@ export default function CreateFolderModal({ open, onOpenChange }: CreateFolderMo
                   <FormLabel>Folder Name</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="e.g., Tokyo Trip 2024"
+                      placeholder="e.g., Tokyo Trip 2025"
                       {...field}
                       data-testid="input-folder-name"
                     />

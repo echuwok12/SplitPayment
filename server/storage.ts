@@ -53,7 +53,7 @@ export class DatabaseStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values(insertUser) 
       .returning();
     return user;
   }
@@ -123,12 +123,18 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createFolder(insertFolder: InsertFolder): Promise<Folder> {
-    const [folder] = await db
-      .insert(folders)
-      .values(insertFolder)
-      .returning();
-    return folder;
+    try {
+      const [folder] = await db
+        .insert(folders)
+        .values(insertFolder)
+        .returning();
+      return folder;
+    } catch (err) {
+      console.error("DB insert error in createFolder:", err);
+      throw err;
+    }
   }
+
 
   async updateFolder(id: string, insertFolder: Partial<InsertFolder>): Promise<Folder> {
     const [folder] = await db
