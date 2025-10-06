@@ -2,7 +2,7 @@
 
 # TripSplitter – End-to-End CI/CD on Azure with Jenkins, AKS, and Harbor
 
-**TripSplitter** is a full-stack NodeJS application deployed on **Microsoft Azure** using a complete **DevOps toolchain** built and managed by me.
+**TripSplitter** is a full-stack NodeJS application deployed on **Microsoft Azure** using a complete **DevOps toolchain**.
 It demonstrates how to design and automate an end-to-end **CI/CD workflow** with security scanning, containerization, infrastructure-as-code, and automated deployment to Kubernetes.
 
 ---
@@ -16,7 +16,7 @@ The system is designed with **four repositories**, each serving a dedicated func
 
 | Repository                 | Purpose                                                                                                   |
 | -------------------------- | --------------------------------------------------------------------------------------------------------- |
-| **TripSplitter-App**       | Contains the full-stack JavaScript source code and `Dockerfile.app` for building the runtime image.       |
+| **TripSplitter-App**       | Contains the full-stack JavaScript source code and `Dockerfile` for building the runtime image.       |
 | **TripSplitter-CI**        | Jenkins CI pipeline responsible for building, scanning, and publishing the Docker image.                  |
 | **TripSplitter-CD**        | Jenkins CD pipeline that updates Kubernetes manifests and deploys to AKS.                                 |
 | **TripSplitter-Terraform** | Infrastructure-as-Code repository used to provision Azure resources such as AKS, networking, and storage. |
@@ -89,7 +89,7 @@ The CI pipeline (defined in `TripSplitter-CI` repo) automates:
 3. **Unit Testing** using Jest or Mocha.
 4. **Static Code Analysis** via **SonarQube**.
 5. **Filesystem Vulnerability Scan** using **Trivy**.
-6. **Docker Image Build** using `Dockerfile.app`.
+6. **Docker Image Build** using `Dockerfile`.
 7. **Container Image Scan** (Trivy).
 8. **Push to Harbor Registry**.
 9. **Update Manifest in CD Repo** and trigger CD job.
@@ -106,7 +106,7 @@ harbor.duckdns.org/tripsplitter/tripapp:v<BUILD_NUMBER>
 
 The CD pipeline (in `TripSplitter-CD` repo):
 
-1. Clones the CD repository (`Argotest`).
+1. Clones the CD repository.
 2. Updates the image tag in `deploy/myapp/deployment.yaml` using `yq`.
 3. Applies the updated manifests to the **AKS cluster** using `kubectl`.
 4. Verifies rollout status.
@@ -154,7 +154,7 @@ Each component of the project is containerized using Docker.
 | **StorageClass**          | Uses Azure CSI driver (`Standard_LRS`)                  |
 | **PersistentVolumeClaim** | Binds PostgreSQL storage to AKS disk                    |
 | **Service**               | Internal networking for PostgreSQL and TripSplitter app |
-| **Ingress**               | External access via `myapp.duckdns.org` with TLS        |
+| **Ingress**               | External access via `tripapp.duckdns.org` with TLS        |
 | **ClusterIssuer**         | Cert-Manager configuration for Let’s Encrypt            |
 
 ---
@@ -174,7 +174,7 @@ The Jenkins master (on the DevOps VM) orchestrates both pipelines:
 
 | Repo                       | Description                                                        |
 | -------------------------- | ------------------------------------------------------------------ |
-| **TripSplitter-App**       | Full-stack Node.js app (frontend + backend) + `Dockerfile.app`     |
+| **TripSplitter-App**       | Full-stack Node.js app (frontend + backend) + `Dockerfile`     |
 | **TripSplitter-CI**        | Jenkinsfile for CI build, scan, and push                           |
 | **TripSplitter-CD**        | Jenkinsfile for deployment to AKS                                  |
 | **TripSplitter-Terraform** | Terraform IaC for provisioning AKS, VNet, and supporting resources |
