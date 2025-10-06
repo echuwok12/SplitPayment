@@ -52,29 +52,7 @@ terraform apply
 
 ### **Overview Diagram**
 
-```
-                +----------------------+
-                |  DevOps VM (Azure)   |
-                |----------------------|
-                | Jenkins (CI/CD)      |
-                | Harbor (Registry)    |
-                | SonarQube            |
-                | Trivy                |
-                +----------+-----------+
-                           |
-                           | Push/Pull Container Images
-                           v
-                +----------------------+
-                |   Azure AKS Cluster  |
-                |----------------------|
-                | TripSplitter App     |
-                | PostgreSQL Database  |
-                | Cert-Manager + Ingress|
-                +----------+-----------+
-                           |
-                           v
-                  myapp.duckdns.org
-```
+<img width="2246" height="1366" alt="diagram-export-10-6-2025-10_20_59-PM" src="https://github.com/user-attachments/assets/b4768fa4-fdf2-47d6-a1ea-f0374612d69a" />
 
 ---
 
