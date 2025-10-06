@@ -206,7 +206,7 @@ DevOps Engineer | Cloud Infrastructure | CI/CD Automation
 
 **Hoang Duy Linh Tran**
 JavaScript Engineer | Cloud Infrastructure | CI/CD Automation
-📧 [saturnn29](https://github.com/saturnn29)
+📧 [duylinh2904@gmail.com](mailto:duylinh2904@gmail.com)
 
 
 ---
