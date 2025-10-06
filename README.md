@@ -16,10 +16,10 @@ The system is designed with **four repositories**, each serving a dedicated func
 
 | Repository                 | Purpose                                                                                                   |
 | -------------------------- | --------------------------------------------------------------------------------------------------------- |
-| **TripSplitter-App**       | Contains the full-stack JavaScript source code and `Dockerfile` for building the runtime image.       |
-| **TripSplitter-CI**        | Jenkins CI pipeline responsible for building, scanning, and publishing the Docker image.                  |
-| **TripSplitter-CD**        | Jenkins CD pipeline that updates Kubernetes manifests and deploys to AKS.                                 |
-| **TripSplitter-Terraform** | Infrastructure-as-Code repository used to provision Azure resources such as AKS, networking, and storage. |
+| **[TripSplitter-App](https://github.com/echuwok12/TripSplitter)**       | Contains the full-stack JavaScript source code and `Dockerfile` for building the runtime image.       |
+| **[TripSplitter-CI](https://github.com/echuwok12/TripSplitter-CI)**        | Jenkins CI pipeline responsible for building, scanning, and publishing the Docker image.                  |
+| **[TripSplitter-CD](https://github.com/echuwok12/TripSplitter-CD)**        | Jenkins CD pipeline that updates Kubernetes manifests and deploys to AKS.                                 |
+| **[TripSplitter-Terraform](https://github.com/echuwok12/TripSplitter-Terraform)** | Infrastructure-as-Code repository used to provision Azure resources such as AKS, networking, and storage. |
 
 ---
 
@@ -172,7 +172,7 @@ DevOps Engineer | Cloud Infrastructure | CI/CD Automation
 📧 [echuwok123@gmail.com](mailto:echuwok123@gmail.com)
 
 **Hoang Duy Linh Tran**
-JavaScript Engineer | Cloud Infrastructure | CI/CD Automation
+DevOps Engineer | Cloud Infrastructure | CI/CD Automation
 📧 [duylinh2904@gmail.com](mailto:duylinh2904@gmail.com)
 
 
