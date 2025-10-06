@@ -36,15 +36,7 @@ All cloud resources are provisioned and managed on **Azure**, using the **Terraf
 | **Azure Virtual Network + Subnets** | Connects AKS nodes securely to other Azure services.                              |
 | **Azure Resource Group**            | Logical grouping for all project components.                                      |
 | **Azure VM (DevOps Server)**        | Central server hosting Jenkins, Harbor, SonarQube, Trivy, and other DevOps tools. |
-| **Azure DNS / DuckDNS**             | Provides external DNS records for Jenkins, Harbor, and TripSplitter ingress.      |
-
-All infrastructure can be deployed automatically using Terraform commands:
-
-```bash
-terraform init
-terraform plan
-terraform apply
-```
+| **DuckDNS**                         | Provides external DNS records for Jenkins, Harbor, and TripSplitter ingress.      |
 
 ---
 
@@ -64,18 +56,17 @@ The CI pipeline (defined in `TripSplitter-CI` repo) automates:
 
 1. **Git Checkout** from the main application repository.
 2. **Dependency Installation** using `npm install`.
-3. **Unit Testing** using Jest or Mocha.
-4. **Static Code Analysis** via **SonarQube**.
-5. **Filesystem Vulnerability Scan** using **Trivy**.
-6. **Docker Image Build** using `Dockerfile`.
-7. **Container Image Scan** (Trivy).
-8. **Push to Harbor Registry**.
-9. **Update Manifest in CD Repo** and trigger CD job.
+3. **Static Code Analysis** via **SonarQube**.
+4. **Filesystem Vulnerability Scan** using **Trivy**.
+5. **Docker Image Build** using `Dockerfile`.
+6. **Container Image Scan** (Trivy).
+7. **Push to Harbor Registry**.
+8. **Update Manifest in CD Repo** and trigger CD job.
 
 🧱 **Image Naming Convention**
 
 ```
-harbor.duckdns.org/tripsplitter/tripapp:v<BUILD_NUMBER>
+tripsplitter/tripapp:v<BUILD_NUMBER>
 ```
 
 ---
@@ -106,9 +97,7 @@ Each component of the project is containerized using Docker.
 * **Purpose**: Combines frontend and backend into a single container
 
 ### **PostgreSQL**
-
-* Uses official `postgres:15` image
-* Persistent data stored via Azure-managed PVC
+* **Purpose**: Persistent data stored via Azure-managed PVC
 
 ---
 
@@ -118,7 +107,7 @@ Each component of the project is containerized using Docker.
 | ------------------------------ | ------------------------------------------------------------------ |
 | **SonarQube**                  | Code quality, maintainability, and bug detection                   |
 | **Trivy**                      | Container and filesystem vulnerability scanning                    |
-| **HashiCorp Vault (optional)** | Centralized secret management for K8s secrets                      |
+| **HashiCorp Vault           ** | Centralized secret management for K8s secrets                      |
 | **Cert-Manager**               | Automatic HTTPS/TLS certificate issuance via Let’s Encrypt         |
 | **Harbor**                     | Private Docker image registry with vulnerability scanning and RBAC |
 
@@ -152,7 +141,7 @@ The Jenkins master (on the DevOps VM) orchestrates both pipelines:
 
 | Repo                       | Description                                                        |
 | -------------------------- | ------------------------------------------------------------------ |
-| **TripSplitter-App**       | Full-stack Node.js app (frontend + backend) + `Dockerfile`     |
+| **TripSplitter**           | Full-stack Node.js app (frontend + backend) + `Dockerfile`     |
 | **TripSplitter-CI**        | Jenkinsfile for CI build, scan, and push                           |
 | **TripSplitter-CD**        | Jenkinsfile for deployment to AKS                                  |
 | **TripSplitter-Terraform** | Terraform IaC for provisioning AKS, VNet, and supporting resources |
@@ -172,7 +161,7 @@ The Jenkins master (on the DevOps VM) orchestrates both pipelines:
 
    * Applies updated manifest to AKS.
    * Cert-Manager provisions HTTPS.
-   * The new version of TripSplitter is live on `https://tripapp.duckdns.org`.
+   * The new version of TripSplitter is live on the website.
 
 ---
 
@@ -180,7 +169,7 @@ The Jenkins master (on the DevOps VM) orchestrates both pipelines:
 
 **Bach Pham**
 DevOps Engineer | Cloud Infrastructure | CI/CD Automation
-📧 [bachtalapro@gmail.com](mailto:bachtalapro@gmail.com)
+📧 [echuwok123@gmail.com](mailto:echuwok123@gmail.com)
 
 **Hoang Duy Linh Tran**
 JavaScript Engineer | Cloud Infrastructure | CI/CD Automation
